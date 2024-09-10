@@ -6,3 +6,7 @@ gsettings set org.gnome.desktop.interface monospace-font-name 'CaskaydiaMono Ner
 
 # Reveal week numbers in the Gnome calendar
 gsettings set org.gnome.desktop.calendar show-weekdate true
+
+# Reveal weekday & seconds in the Gnome clock
+gsettings set org.gnome.desktop.interface clock-show-seconds true
+gsettings set org.gnome.desktop.interface clock-show-weekday true
