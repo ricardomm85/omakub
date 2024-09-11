@@ -15,7 +15,7 @@ echo -e "\nBegin installation (or abort with ctrl+c)..."
 sudo apt-get update >/dev/null
 sudo apt-get install -y git >/dev/null
 
-echo "Cloning Omakub..."
+echo "Cloning ricardomm85/omakub..."
 rm -rf ~/.local/share/omakub
 git clone https://github.com/ricardomm85/omakub.git ~/.local/share/omakub >/dev/null
 if [[ $OMAKUB_REF != "master" ]]; then
