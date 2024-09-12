@@ -1,0 +1,19 @@
+ControlMaster auto
+ControlPersist 180
+StrictHostKeyChecking no
+ServerAliveInterval 30
+
+Host !gitlab.com
+  ControlPath   ~/.ssh/tmp/%h_%p_%r
+
+Host .*
+  User ubuntu
+  CanonicalizeHostname no
+  ProxyCommand ~/.ssh/ssh-ec2 %h
+  UserKnownHostsFile ~/.ssh/known_ec2_hosts
+  CheckHostIP no
+
+Host .vpn vpn
+  User ubuntu
+  ProxyCommand none
+  RequestTTY yes

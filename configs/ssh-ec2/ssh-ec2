@@ -1,0 +1,56 @@
+#!/usr/bin/perl
+
+use Storable;
+
+$SSH_DIR= "$ENV{'HOME'}/.ssh";
+
+$_= shift;
+
+if ($_ eq '..') {
+  @lines= `aws ec2 describe-instances --query 'sort_by(Reservations[*].Instances[?State.Name==\`running\`]|[],&LaunchTime)[*].[Tags[?Key==\`Name\`].Value|[0],InstanceId,PrivateDnsName]'`;
+  @lines= map { chomp; my %l; @l{('name', 'id', 'dns')}= split /\t/; \%l } @lines;
+
+  store(\@lines, "$SSH_DIR/ec2_hosts");
+
+  unlink "$SSH_DIR/known_ec2_hosts";
+
+  print STDERR "AWS Host list refreshed. There are:\n\n";
+
+  $c{$$_{name}}++ foreach (@lines);
+  while (($k, $v) = each %c) {
+    print STDERR "$v $k\n" if ($v>1);
+
+  }
+  print STDERR "\n";
+
+  exit 1;
+}
+
+$lines= retrieve "$SSH_DIR/ec2_hosts";
+
+s/^\.//;
+s/\./ /g;
+
+sub findHosts {
+  return grep { lc($$_{name}) eq @_[0] || $$_{id} eq @_[0] } @$lines;
+}
+
+$i= 1;
+@hosts= findHosts($_);
+$c= @hosts;
+if ($c != 1) {
+  if ($c == 0 && s/\s+(\d+)$//) {
+	$i= $1;
+    @hosts= findHosts($_);
+	$c= @hosts;
+  }
+  if ($c < $i) {
+	print STDERR "$c hosts match '$_'.\n";
+	exit;
+  }
+}
+$h= $hosts[$i-1];
+
+print STDERR "Connecting to $$h{name} ".($c>1?"$i of $c ":"")."= $$h{id} = $$h{dns}\n";
+
+exec('ssh', '-q', 'vpn', 'nc', '-q0', $$h{dns}, '22');
