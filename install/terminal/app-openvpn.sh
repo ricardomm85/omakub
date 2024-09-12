@@ -13,6 +13,7 @@ import_ovpn_to_networkmanager() {
             connection_name=$(basename "$ovpn_path" .ovpn)
             if sudo nmcli connection import type openvpn file "$ovpn_path"; then
                 gum style --foreground 2 "VPN configuration '$connection_name' has been successfully imported to NetworkManager."
+                gum style --foreground 2 "NOTE: Go to VPN > Settings > '$connection_name' > Disable Automatic DNS > Add: 172.31.0.2, 1.1.1.1, 8.8.8.8"
                 return 0
             else
                 gum style --foreground 1 "Failed to import the VPN configuration. Please check the file and try again."
@@ -37,5 +38,4 @@ if gum confirm "Do you want to configure an OpenVPN connection?"; then
     import_ovpn_to_networkmanager
 else
     gum style --foreground 3 "OpenVPN configuration cancelled."
-#    exit 0
 fi
