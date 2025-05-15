@@ -8,7 +8,7 @@ gnome-extensions disable ubuntu-dock@ubuntu.com
 gnome-extensions disable ding@rastersoft.com
 
 # Pause to assure user is ready to accept confirmations
-gum confirm "To install Gnome extensions, you need to accept some confirmations. Are you ready?"
+gum confirm "To install Gnome extensions, you need to accept some confirmations. Ready?"
 
 # Install new extensions
 gext install tactile@lundal.io
@@ -68,6 +68,7 @@ gsettings set org.gnome.shell.extensions.tophat show-icons false
 gsettings set org.gnome.shell.extensions.tophat show-cpu false
 gsettings set org.gnome.shell.extensions.tophat show-disk false
 gsettings set org.gnome.shell.extensions.tophat show-mem false
+gsettings set org.gnome.shell.extensions.tophat show-fs false
 gsettings set org.gnome.shell.extensions.tophat network-usage-unit bits
 
 # Configure AlphabeticalAppGrid
