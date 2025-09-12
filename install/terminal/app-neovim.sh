@@ -1,3 +1,5 @@
+#!/bin/bash
+
 cd /tmp
 wget -O nvim.tar.gz "https://github.com/neovim/neovim/releases/download/stable/nvim-linux-x86_64.tar.gz"
 tar -xf nvim.tar.gz
@@ -29,10 +31,14 @@ if [ ! -d "$HOME/.config/nvim" ]; then
 
   # Turn off relative line numbers
   echo "vim.opt.relativenumber = false" >>~/.config/nvim/lua/config/options.lua
+
+  # Ensure editor.neo-tree is used by default
+  cp ~/.local/share/omakub/configs/neovim/lazyvim.json ~/.config/nvim/
 fi
 
 # Replace desktop launcher with one running inside Alacritty
 if [[ -d ~/.local/share/applications ]]; then
   sudo rm -rf /usr/share/applications/nvim.desktop
+  sudo rm -rf /usr/local/share/applications/nvim.desktop
   source ~/.local/share/omakub/applications/Neovim.sh
 fi
